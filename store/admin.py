@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Vendor, User, Product, Customer, Order, OrderItem
 
 
-# ---------------- Vendor ----------------
 @admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "contact_email", "domain", "created_at")
@@ -10,7 +9,6 @@ class VendorAdmin(admin.ModelAdmin):
     list_filter = ("created_at",)
 
 
-# ---------------- User ----------------
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ("username", "email", "role", "vendor", "is_active", "is_staff")
@@ -23,7 +21,6 @@ class UserAdmin(admin.ModelAdmin):
     )
 
 
-# ---------------- Product ----------------
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "vendor", "price", "quantity", "assigned_to", "created_at")
@@ -32,7 +29,6 @@ class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ("vendor", "assigned_to")
 
 
-# ---------------- Customer ----------------
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "vendor", "phone")

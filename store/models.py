@@ -1,11 +1,10 @@
-# store/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Vendor(models.Model):
     name = models.CharField(max_length=200)
     contact_email = models.EmailField()
-    domain = models.CharField(max_length=200, blank=True, null=True)  # optional
+    domain = models.CharField(max_length=200, blank=True, null=True) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -43,7 +42,7 @@ class Order(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='orders')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders')
     total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    status = models.CharField(max_length=30, default='pending')  # pending, processing, shipped, delivered
+    status = models.CharField(max_length=30, default='pending') 
     created_at = models.DateTimeField(auto_now_add=True)
     assigned_to = models.ForeignKey('User',null=True,blank=True,limit_choices_to={'role': 'staff'},on_delete=models.SET_NULL,related_name='assigned_orders')
 

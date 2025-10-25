@@ -1,4 +1,3 @@
-# store/middleware.py
 from django.utils.deprecation import MiddlewareMixin
 from .models import Vendor
 
@@ -7,12 +6,10 @@ class TenantMiddleware(MiddlewareMixin):
     def process_request(self, request):
         tenant_id = None
 
-        # If authenticated user has vendor, use it
         user = getattr(request, 'user', None)
         if user and user.is_authenticated:
             tenant_id = getattr(user, 'vendor_id', None)
 
-        # If not found, try header
         if not tenant_id:
             tenant_id = request.headers.get('X-Tenant-ID') or request.META.get('HTTP_X_TENANT_ID')
 

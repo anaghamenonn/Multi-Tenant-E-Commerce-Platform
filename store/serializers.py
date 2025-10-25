@@ -1,4 +1,3 @@
-# store/serializers.py
 from rest_framework import serializers
 from .models import Vendor, Product, Customer, Order, OrderItem, User
 
@@ -18,7 +17,6 @@ class ProductSerializer(serializers.ModelSerializer):
     def validate_assigned_to(self, value):
         if value is None:
             return value
-        # staff must belong to same vendor
         vendor = self.context.get('request').user.vendor or getattr(self.context.get('request'), 'tenant', None)
         if value.vendor != vendor:
             raise serializers.ValidationError("Assigned staff must belong to the same vendor.")
@@ -38,7 +36,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, write_only=True)
-    # Expose items read-only nested output if needed
     items_detail = OrderItemSerializer(source='items', many=True, read_only=True)
 
     class Meta:
@@ -47,7 +44,6 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ['customer', 'vendor', 'total_amount', 'status', 'created_at']
 
     def validate(self, data):
-        # ensure products in items belong to the same vendor as requester
         request = self.context.get('request')
         vendor = getattr(request, 'tenant', None) or request.user.vendor
         for item in data.get('items', []):
@@ -59,12 +55,10 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         items_data = validated_data.pop('items', [])
         request = self.context.get('request')
-        # find or create customer object for request.user
         customer = None
         try:
             customer = Customer.objects.get(user=request.user)
         except Customer.DoesNotExist:
-            # If user is customer role, create Customer; otherwise error
             if request.user.role == 'customer':
                 customer = Customer.objects.create(user=request.user, vendor=request.user.vendor, name=request.user.username, email=request.user.email or '')
             else:
