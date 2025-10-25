@@ -161,5 +161,12 @@ SIMPLE_JWT = {
 }
 
 # Only enable these for production; keep safe defaults.
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-# CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
+# Tell Django it's behind a proxy/load balancer that sets X-Forwarded-Proto
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Ensure CSRF trusted origins read from env properly
+raw_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+if raw_csrf:
+    CSRF_TRUSTED_ORIGINS = [u.strip() for u in raw_csrf.split(",")]
+else:
+    CSRF_TRUSTED_ORIGINS = []
