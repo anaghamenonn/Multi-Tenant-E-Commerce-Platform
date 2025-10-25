@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "4dbafbce-374c-4f7f-9d44-4ae7ddd1f252",
+		"name": "Multi-Tenant E-Commerce (Render)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33942849"
+	},
+	"item": [
+		{
+			"name": "Vendors / Create (admin)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Vendor A\",\n  \"contact_email\": \"owner@vendor-a.com\",\n  \"domain\": \"vendor-a.example\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/vendors/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"vendors",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Owner",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"owner1\",\n  \"password\": \"ownerpass\",\n  \"role\": \"owner\",\n  \"email\": \"owner@vendor-a.com\",\n  \"vendor_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Owner Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json(); if (json.access) pm.collectionVariables.set('token', json.access);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"owner1\", \"password\": \"ownerpass\" }"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Staff",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"staff1\",\n  \"password\": \"staffpass\",\n  \"role\": \"staff\",\n  \"email\": \"staff@vendor-a.com\",\n  \"vendor_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product (owner)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDExNzYzLCJpYXQiOjE3NjE0MDgxNjMsImp0aSI6IjFlMjYyMmJlNDVkNzRhMGJhNDk0ZjkxYjJlMmIxYTVjIiwidXNlcl9pZCI6IjQiLCJyb2xlIjoib3duZXIiLCJ0ZW5hbnRfaWQiOjEsInVzZXJuYW1lIjoib3duZXIxIn0.V1y6en-hPWAmXjMFgzah2n5pZJ-HM5E9vah2cZe3dls"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"T-Shirt\",\n  \"description\": \"Comfort tee\",\n  \"price\": \"299.00\",\n  \"quantity\": 50,\n  \"assigned_to\": 5\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/products/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Staff Login (replace body with staff creds)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json(); if (json.access) pm.collectionVariables.set('token', json.access);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"staff1\", \"password\": \"staffpass\" }"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Staff: List Products (assigned)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDExOTU3LCJpYXQiOjE3NjE0MDgzNTcsImp0aSI6IjNmM2NmNTQ4YTI2NzRkYTJiZjA2NjA3YWY0MTI3M2U1IiwidXNlcl9pZCI6IjUiLCJyb2xlIjoic3RhZmYiLCJ0ZW5hbnRfaWQiOjEsInVzZXJuYW1lIjoic3RhZmYxIn0.xOxPRnKZy0_R4kxjapTa1jCeF8ttQq18rMujLWIfjRg"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/products/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"customer1\",\n  \"password\": \"custpass\",\n  \"role\": \"customer\",\n  \"email\": \"cust@vendor-a.com\",\n  \"vendor_id\": 1,\n  \"name\": \"Customer One\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json(); if (json.access) pm.collectionVariables.set('token', json.access);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"customer1\", \"password\": \"custpass\" }"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place Order (customer)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDEyMDcwLCJpYXQiOjE3NjE0MDg0NzAsImp0aSI6ImM1ZWZkZThjYzBlYzQ2ZDdiN2NiM2Q5OWJhZWEyMjk1IiwidXNlcl9pZCI6IjYiLCJyb2xlIjoiY3VzdG9tZXIiLCJ0ZW5hbnRfaWQiOjEsInVzZXJuYW1lIjoiY3VzdG9tZXIxIn0.hWtVZXNj_vkCkHVZWwok56VBX_eC5rEYyeniXVw0N48"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"items\": [{ \"product\": 1, \"qty\": 2 }] }"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/orders/place/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						"place",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer: List Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDExNzYzLCJpYXQiOjE3NjE0MDgxNjMsImp0aSI6IjFlMjYyMmJlNDVkNzRhMGJhNDk0ZjkxYjJlMmIxYTVjIiwidXNlcl9pZCI6IjQiLCJyb2xlIjoib3duZXIiLCJ0ZW5hbnRfaWQiOjEsInVzZXJuYW1lIjoib3duZXIxIn0.V1y6en-hPWAmXjMFgzah2n5pZJ-HM5E9vah2cZe3dls"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/orders/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Owner: List Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDExNzYzLCJpYXQiOjE3NjE0MDgxNjMsImp0aSI6IjFlMjYyMmJlNDVkNzRhMGJhNDk0ZjkxYjJlMmIxYTVjIiwidXNlcl9pZCI6IjQiLCJyb2xlIjoib3duZXIiLCJ0ZW5hbnRfaWQiOjEsInVzZXJuYW1lIjoib3duZXIxIn0.V1y6en-hPWAmXjMFgzah2n5pZJ-HM5E9vah2cZe3dls"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/orders/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://multi-tenant-e-commerce-platform.onrender.com"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "vendor_id",
+			"value": "1"
+		}
+	]
+}
