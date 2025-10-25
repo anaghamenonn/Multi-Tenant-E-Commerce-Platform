@@ -15,7 +15,7 @@ Python 3.10+
 ## 🧩 Setup Instructions
 
 ### 1. Clone repo
-git clone https://github.com/anaghamenonn/Multi-Tenant-E-Commerce-Platform.git
+git clone https://github.com/anaghamenonn/Multi-Tenant-E-Commerce-Platform.git  
 cd multi-tenant-ecommerce
 
 ### 2. Create virtual environment
@@ -41,5 +41,6 @@ DATABASES = {
 python manage.py makemigrations
 python manage.py migrate
 
-# 6. Run server
+### 6. Run server
 python manage.py runserver
+
