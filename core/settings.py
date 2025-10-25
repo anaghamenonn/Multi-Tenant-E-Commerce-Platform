@@ -85,13 +85,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 if DEBUG:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.mysql",
+            "ENGINE": "django.db.backends.postgresql",
             "NAME": "multi_tenant_ecom",
-            "USER": "root",
-            "PASSWORD": "",
+            "USER": "postgres",
+            "PASSWORD": "hacker",
             "HOST": "127.0.0.1",
-            "PORT": "3306",
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+            "PORT": "5432",
         }
     }
 # PostgreSQL for Render (production)
