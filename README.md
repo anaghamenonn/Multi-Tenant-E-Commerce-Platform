@@ -97,7 +97,6 @@ python manage.py runserver
 - **Hosting:** Render (Free Tier)  
 - PostgreSQL database configured on Render (Free Tier).
 - Environment variables set in the Render Dashboard.
-- Live API URL: https://multi-tenant-e-commerce-platform.onrender.com
 
 ## Testing Instructions
 - Import the Postman Collection in Postman(Json file is in root dir)
@@ -114,3 +113,4 @@ All endpoints and example requests are fully documented in the collection.
 Anagha P H
 Software Developer  
 📧 Email: anaghamenon7377@gmail.com
+
